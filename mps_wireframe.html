@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MPS × ABC — UX Wireframe v1</title>
+<title>MPS × ABC — UX Wireframe v2</title>
 <style>
   :root{
     --ink:#111;
@@ -222,15 +222,43 @@
   .mps-panel-head .welcome strong{color:var(--ink);font-weight:500}
   .mps-panel-head .close{margin-left:auto;font-size:14px;color:var(--mute);cursor:pointer;width:22px;height:22px;display:grid;place-items:center}
 
-  .mps-panel-body{display:grid;grid-template-columns:1fr 1fr 1fr;min-height:340px}
-  .mps-col{padding:22px 20px;border-right:1px solid var(--line-2)}
-  .mps-col:last-child{border-right:none}
-  .mps-col h3{font-family:var(--font-serif);font-size:16px;font-weight:400;margin-bottom:14px;letter-spacing:.02em}
-  .mps-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
-  .mps-col ul li{font-size:12.5px;color:var(--ink-2);display:flex;gap:8px;align-items:flex-start;cursor:pointer;padding:6px 0;border-bottom:1px solid var(--line-2)}
-  .mps-col ul li:last-child{border-bottom:none}
-  .mps-col ul li .arrow{margin-left:auto;color:var(--mute);font-size:11px}
-  .mps-panel-foot{padding:14px 22px;border-top:1px solid var(--line-2);display:flex;align-items:center;gap:12px;font-size:11px;color:var(--mute)}
+  /* Tab-based panel: only one section visible at a time, switched via bottom icon nav (Instagram pattern) */
+  .mps-panel-body{position:relative;min-height:420px}
+  .mps-tab-panel{display:none;padding:26px 28px;flex-direction:column;gap:16px}
+  .mps-tab-panel.active{display:flex}
+  .mps-tab-panel h3{font-family:var(--font-serif);font-size:22px;font-weight:400;letter-spacing:.01em}
+  .mps-tab-panel .panel-sub{font-size:12px;color:var(--mute);margin-top:-10px}
+  .mps-tab-panel ul{list-style:none;display:flex;flex-direction:column;gap:0}
+  .mps-tab-panel ul li{font-size:13px;color:var(--ink-2);display:flex;gap:8px;align-items:center;cursor:pointer;padding:14px 4px;border-bottom:1px solid var(--line-2)}
+  .mps-tab-panel ul li:last-child{border-bottom:none}
+  .mps-tab-panel ul li .arrow{margin-left:auto;color:var(--mute);font-size:12px}
+  .mps-tab-panel ul li .meta{font-size:11px;color:var(--mute);margin-left:auto;margin-right:8px}
+
+  /* Stylist tab — full chat takes the panel */
+  .mps-tab-panel.stylist-full{padding:0;gap:0}
+  .stylist-full-head{padding:18px 24px;border-bottom:1px solid var(--line-2);display:flex;align-items:center;gap:12px}
+  .stylist-full-head .avatar{width:38px;height:38px;border-radius:50%;background:var(--ink);color:var(--white);display:grid;place-items:center;font-family:var(--font-serif);font-size:16px}
+  .stylist-full-head .h{font-family:var(--font-serif);font-size:18px;line-height:1.1}
+  .stylist-full-head .s{font-size:10.5px;color:var(--mute);letter-spacing:.1em;text-transform:uppercase;margin-top:3px}
+  .stylist-full-head .s::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#3a9b5c;margin-right:5px;vertical-align:middle}
+  .stylist-full-chat{flex:1;padding:18px 24px;display:flex;flex-direction:column;gap:10px;overflow:hidden;min-height:280px}
+  .stylist-full-input{padding:14px 24px;border-top:1px solid var(--line-2)}
+
+  /* Bottom tab bar — Instagram pattern */
+  .mps-tab-bar{
+    display:flex;border-top:1px solid var(--line-2);background:var(--white);
+  }
+  .mps-tab-bar .tab{
+    flex:1;padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;
+    background:transparent;border:none;font:inherit;color:var(--mute);transition:color .15s;border-top:2px solid transparent;margin-top:-1px;
+  }
+  .mps-tab-bar .tab:hover{color:var(--ink-2)}
+  .mps-tab-bar .tab.active{color:var(--accent);border-top-color:var(--accent)}
+  .mps-tab-bar .tab .ic{width:22px;height:22px;display:grid;place-items:center}
+  .mps-tab-bar .tab .ic svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5}
+  .mps-tab-bar .tab .lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:500}
+
+  .mps-panel-foot{padding:14px 22px;border-top:1px solid var(--line-2);display:flex;align-items:center;gap:12px;font-size:11px;color:var(--mute);flex-wrap:wrap}
   .mps-panel-foot .link{color:var(--accent);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
 
   /* Mini stylist preview card inside Stylist column */
@@ -369,7 +397,7 @@
 
 <!-- ============ TOP NAV ============ -->
 <div class="doc-nav">
-  <div class="brand">MPS × ABC <em>— UX wireframe v1</em></div>
+  <div class="brand">MPS × ABC <em>— UX wireframe v2</em></div>
   <div class="legend">Premium fashion · click-through demo</div>
   <div class="spacer"></div>
   <div class="stepper" id="stepper"></div>
@@ -468,7 +496,7 @@
   <div class="slide-header">
     <span class="num">Slide 02 / 06</span>
     <h2 class="title">Profile creation — photos, details, consents</h2>
-    <p class="subtitle">Modal popup embedded on ABC's page. Capture front/side/back, collect name/email/height/weight. SSO option. On completion, the MPS panel opens with three zones.</p>
+    <p class="subtitle">Modal popup embedded on ABC's page. Capture front/side/back, collect name/email/height/weight. SSO option. On completion, the MPS panel opens with three tab-switched sections — <strong>Shop ABC, My MPS, Stylist</strong> — navigated via Instagram-style bottom icons.</p>
   </div>
 
   <!-- Stage A: profile creation modal -->
@@ -558,42 +586,79 @@
               <div class="close">×</div>
             </div>
             <div class="mps-panel-body">
-              <!-- My MPS -->
-              <div class="mps-col">
+              <!-- Tab 1: My MPS -->
+              <div class="mps-tab-panel" data-tab="my-mps">
                 <h3>My MPS</h3>
+                <p class="panel-sub">Your scan, consents, and shopping history.</p>
                 <ul>
-                  <li>Profile &amp; scans<span class="arrow">→</span></li>
+                  <li>Profile &amp; scans<span class="meta">3 photos</span><span class="arrow">→</span></li>
                   <li>Re-capture photos<span class="arrow">→</span></li>
-                  <li>Consents &amp; data<span class="arrow">→</span></li>
-                  <li>Shopping history<span class="arrow">→</span></li>
-                  <li>Settings<span class="arrow">→</span></li>
+                  <li>Consents &amp; data permissions<span class="arrow">→</span></li>
+                  <li>Shopping history on ABC<span class="meta">0 items</span><span class="arrow">→</span></li>
+                  <li>Notification preferences<span class="arrow">→</span></li>
+                  <li>Account settings<span class="arrow">→</span></li>
                 </ul>
               </div>
-              <!-- Shop ABC -->
-              <div class="mps-col">
+
+              <!-- Tab 2: Shop ABC (active by default) -->
+              <div class="mps-tab-panel active" data-tab="shop">
                 <h3>Shop ABC</h3>
+                <p class="panel-sub">Everything MPS offers on this store.</p>
                 <ul>
-                  <li>Personalized homepage<span class="arrow">→</span></li>
-                  <li>Current try-ons (0)<span class="arrow">→</span></li>
-                  <li>ABC editorial picks<span class="arrow">→</span></li>
-                  <li>Collections on you<span class="arrow">→</span></li>
+                  <li>Personalized homepage<span class="meta">New</span><span class="arrow">→</span></li>
+                  <li>Current try-ons<span class="meta">0</span><span class="arrow">→</span></li>
+                  <li>ABC editorial picks for you<span class="arrow">→</span></li>
+                  <li>Collections rendered on you<span class="arrow">→</span></li>
+                  <li>Saved looks &amp; outfits<span class="arrow">→</span></li>
                 </ul>
+                <div style="margin-top:6px"><button class="btn" style="padding:11px 22px;font-size:11px;width:100%" onclick="goTo(3)">Enter personalized homepage</button></div>
               </div>
-              <!-- Stylist -->
-              <div class="mps-col">
-                <h3>Stylist</h3>
-                <div class="stylist-mini">
+
+              <!-- Tab 3: Stylist (full-bleed chat) -->
+              <div class="mps-tab-panel stylist-full" data-tab="stylist">
+                <div class="stylist-full-head">
+                  <div class="avatar">M</div>
+                  <div>
+                    <div class="h">Stylist</div>
+                    <div class="s">Online · remembers your context</div>
+                  </div>
+                </div>
+                <div class="stylist-full-chat">
                   <div class="msg bot"><span class="tiny">MPS stylist</span>Welcome Luke. Any trips, events, or outfits on your mind?</div>
                   <div class="msg user">Barcelona next week. Warm days, cool evenings.</div>
-                  <div class="msg bot">Noted. I'll put together a capsule for you.</div>
+                  <div class="msg bot">Noted. I'll put together a capsule for you — breathable fabrics, tonal, easy to layer.</div>
+                  <div class="msg bot">Anything else? Dress code, planned activities, things you want to avoid?</div>
+                  <div class="chip-row">
+                    <span class="chip">Dinners out</span>
+                    <span class="chip">Walking days</span>
+                    <span class="chip">Skip linen</span>
+                  </div>
                 </div>
-                <div class="chat-input"><input placeholder="Tell the stylist more..."><div class="send">→</div></div>
+                <div class="stylist-full-input">
+                  <div class="chat-input"><input placeholder="Tell the stylist more..."><div class="send">→</div></div>
+                </div>
               </div>
             </div>
+
+            <!-- Bottom tab bar (Instagram pattern) -->
+            <div class="mps-tab-bar">
+              <button class="tab" data-target="my-mps" onclick="switchTab('my-mps')">
+                <span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></span>
+                <span class="lbl">My MPS</span>
+              </button>
+              <button class="tab active" data-target="shop" onclick="switchTab('shop')">
+                <span class="ic"><svg viewBox="0 0 24 24"><path d="M5 9h14l-1 11H6L5 9z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg></span>
+                <span class="lbl">Shop ABC</span>
+              </button>
+              <button class="tab" data-target="stylist" onclick="switchTab('stylist')">
+                <span class="ic"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+                <span class="lbl">Stylist</span>
+              </button>
+            </div>
+
             <div class="mps-panel-foot">
               <span>Want the full MPS experience across every brand?</span>
               <span class="link">Visit myperfectscan.com →</span>
-              <span style="margin-left:auto"><button class="btn" style="padding:8px 18px;font-size:10px" onclick="goTo(3)">Enter personalized homepage</button></span>
             </div>
           </div>
         </div>
@@ -601,10 +666,11 @@
 
       <aside class="notes">
         <h4>Design notes — hub</h4>
+        <div class="note"><span class="tag">v2 update</span>Three sections now switch as <strong>tabs</strong> rather than appearing side-by-side. Bottom icon nav (Instagram pattern) — only one section fills the screen at a time. <em>Click the tab icons below the panel to try it.</em></div>
         <div class="note"><span class="tag">My MPS</span>Settings, consents, re-capture, and history of everything rendered for ABC — the user's private control center.</div>
-        <div class="note"><span class="tag">Shop ABC</span>All MPS features <strong>specific to this retailer</strong>: current advertising, virtual try-ons for the session, brand-custom features.</div>
-        <div class="note"><span class="tag">Stylist</span>The AI stylist introduces itself and captures context (trips, events, preferences). This context travels with the user for the rest of the session.</div>
-        <div class="note"><span class="tag">Escape</span>Link out to <strong>myperfectscan.com</strong> — the main MPS app — for users who want the cross-brand experience. Positioned as a soft link so ABC doesn't lose the visitor.</div>
+        <div class="note"><span class="tag">Shop ABC</span>Default tab on first open. All MPS features <strong>specific to this retailer</strong>: personalized homepage, current try-ons, editorial picks. Primary CTA pulls the user into the personalized journey.</div>
+        <div class="note"><span class="tag">Stylist</span>Full-bleed chat takes the whole panel — feels like a conversation, not a sidebar. Captures context (trips, events, preferences) that travels for the rest of the session.</div>
+        <div class="note"><span class="tag">Escape</span>Link out to <strong>myperfectscan.com</strong> — the main MPS app — for users who want the cross-brand experience.</div>
       </aside>
     </div>
   </div>
@@ -1134,6 +1200,10 @@
     document.querySelectorAll('.slide').forEach(s => s.classList.toggle('active', +s.dataset.slide === n));
     document.querySelectorAll('.step').forEach(s => s.classList.toggle('active', +s.dataset.step === n));
     window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function switchTab(target){
+    document.querySelectorAll('.mps-tab-panel').forEach(p => p.classList.toggle('active', p.dataset.tab === target));
+    document.querySelectorAll('.mps-tab-bar .tab').forEach(t => t.classList.toggle('active', t.dataset.target === target));
   }
   document.addEventListener('keydown', e => {
     const cur = +document.querySelector('.slide.active').dataset.slide;
